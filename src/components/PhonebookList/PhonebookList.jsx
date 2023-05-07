@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import PhoneItem  from './PhonebookItem';
 
-const PhoneList =({ filteredContacts, deleteContact }) => {
+export default function PhoneList({ contacts = [], deleteContact }) {
     return (
       <>
-        {filteredContacts.map(({ id, name, number }) => {
+        {contacts.map(({ id, name, number }) => {
           return (
             <PhoneItem
             deleteContact={deleteContact}
@@ -20,7 +20,7 @@ const PhoneList =({ filteredContacts, deleteContact }) => {
 };
 
 PhoneList.propTypes = {
-    filteredContacts: PropTypes.arrayOf(
+    contacts: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
             name: PropTypes.string.isRequired,
@@ -30,4 +30,4 @@ PhoneList.propTypes = {
             deleteContact: PropTypes.func.isRequired,
           };
       
- export default  PhoneList;   
+

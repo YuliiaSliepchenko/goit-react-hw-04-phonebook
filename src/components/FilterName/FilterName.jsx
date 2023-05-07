@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
 import s from './FilterName.module.css'
 
-const Filter = ({filterValue, filterOn}) => {
+export default function Filter({inputChange}){
     return (
-        <label  htmlFor="">
+        <label  htmlFor="filter">
             <span>Find contacts by name</span>
-            <input className={s.filter} value={filterValue} onChange={filterOn} type="text" />
+            <input className={s.filter}  onChange={e => {inputChange(e.currentTarget.value)}} type="text" />
         </label>
     );
 };
 Filter.propTypes = {
-    filterValue: PropTypes.string.isRequired,
-    filterOn:PropTypes.func.isRequired,
+    inputChange:PropTypes.func,
 };
 
-export default Filter;

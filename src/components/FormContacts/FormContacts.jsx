@@ -1,71 +1,69 @@
-import React, { Component } from 'react';
-import { nanoid } from 'nanoid';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './FormContacts.module.css'
 
-class Form extends Component {
-   state = {
-    name: '',
-    number: '',
-};
 
-    nameId = nanoid();
-    numberId = nanoid();
 
-    handleChange = e => {
-        const  {name ,value } = e.currentTarget;
-         this.setState({[name]: value });
-         };
+export default function Form({contactAdd}) {
+  
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-    handleSubmit = e => {
-        const { name, number} =this.state;
-            e.preventDefault();
-          
-            this.props.contactAdd({name: name, number:number});
-            this.reset()
-           };
+   const handleChange = e => {
+        const input = e.target;
+     switch (input.name) {
+       case 'name':
+         setName(input.value);
+         break;
+       case 'number':
+         setNumber(input.value);
+         break;
+       default:
+         return;
+        }
+  };
+  const handleSubmit = e => {
+  e.preventDefault();
+    contactAdd({ name, number });
+    setName('');
+    setNumber('');
+   }; 
 
-           reset = () => {
-            this.setState({ name: '', number: ''})
-           };
-          
-   render() {
    
     return ( 
                 
-         <form className={s.form} onSubmit={this.handleSubmit}>
+         <form className={s.form} onSubmit={handleSubmit}>
             <h2 className={s.title}>Name</h2>
-        <label className={s.form_label} htmlFor={this.nameId}>
+        <label className={s.form_label} htmlFor={name}>
           <input type="text"
            name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
-           value={this.state.name} 
-           onChange={this.handleChange}
-           id={this.nameId}
+           value={name} 
+           onChange={handleChange}
+           id={name}
             />
             </label>
             <h2 className={s.title}>Number</h2>
-           <label className={s.form_label} htmlFor={this.numberId}>
+           <label className={s.form_label} htmlFor={number}>
           <input
            type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-           value={this.state.number} 
-           onChange={this.handleChange}
-           id={this.numberId}
+           value={number} 
+           onChange={handleChange}
+           id={number}
             />
             </label>
           <button className={s.form_btn} type="submit">Add contacts</button>
           </form>
          );
       }
-    }
+    
    Form.propTypes = {
     contactAdd:PropTypes.func.isRequired,
    };
 
-export default Form;
